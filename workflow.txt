@@ -1,0 +1,13 @@
+När ett meddelande skall krypteras för att skickas:
+
+1. Vi har meddelandet i klartext
+2. Generera en AES-nyckel
+3. Kryptera meddelandet med AES och den genererade nyckeln
+4. Kryptera AES-nyckeln med RSA och mottagrens publika RSA-nyckel
+5. Skicka den RSA-krypterade nyckeln och det AES-krypterade meddelandet till mottagrens
+
+
+När vi tar emot det krypterade meddelandet:
+
+1. Dekryptera AES-nyckeln med RSA och den privata RSA-nyckeln
+2. Använd den dekrypterade AES-nyckeln för att dekryptera meddelandet 
