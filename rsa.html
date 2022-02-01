@@ -34,19 +34,69 @@
 
     <script>
         let publicKey;
+        let privateKey;
 
         function readPublicKey() {
+            // Get the public file chooser files
             let files = document.getElementById("pub-file").files;
+            // and exctract the first file, the one we want
+            let file = files[0];
+
+            // Create a file reader object
+            let reader = new FileReader();
+
+            // When the file is read, this function will be called
+            reader.onloadend = function (event) {
+                // Get the file contents
+                publicKey = event.target.result;
+                // Remove all new lines in the key
+                publicKey = publicKey.replace(/(\r\n|\n|\r)/gm, "");
+                // Notify the user that the file is read
+                document.getElementById("pub-loaded").innerHTML = "Public key loaded";
+            };
+
+            // Read the file
+            reader.readAsText(file);
+        }
+
+        function readPrivateKey() {
+            let files = document.getElementById("priv-file").files;
             let file = files[0];
             let reader = new FileReader();
 
             reader.onloadend = function (event) {
-                publicKey = event.target.result;
-                publicKey = publicKey.replace(/(\r\n|\n|\r)/gm, "");
-                document.getElementById("pub-loaded").innerHTML = "Public key loaded";
+                privateKey = event.target.result;
+                privateKey = privateKey.replace(/(\r\n|\n|\r)/gm, "");
+                document.getElementById("priv-loaded").innerHTML = "Private key loaded";
             };
 
             reader.readAsText(file);
+        }
+
+        function rsaEncrypt() {
+            // Get the message to encrypt
+            let plainText = document.getElementById("plain").value;
+            // Create a RSA object
+            let rsaEncrypt = new JSEncrypt();
+            // Set the public key we want to use for encryption
+            rsaEncrypt.setPublicKey(publicKey);
+            // Encrypt the message
+            let encrypted = rsaEncrypt.encrypt(plainText);
+            // Show the encrypted message on the page
+            document.getElementById("encrypted").innerHTML = encrypted;
+        }
+
+        function rsaDecrypt() {
+            // Get the encrypted message
+            let cipher = document.getElementById("encrypted").innerHTML;
+            // Create a RSA object
+            let rsaEncrypt = new JSEncrypt();
+            // Set the private key we want to use for decryption
+            rsaEncrypt.setPrivateKey(privateKey);
+            // Decrypt the message
+            let plainText = rsaEncrypt.decrypt(cipher);
+            // Show the decryted message
+            document.getElementById("decrypted").innerHTML = plainText;
         }
     </script>
 
