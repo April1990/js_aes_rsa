@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AES</title>
+</head>
+<body>
+    <input id="plain" placeholder="Message to Encrypt" /> <br />
+    <input id="key" placeholder="AES key (enter text or generate)" /> 
+    <button onclick="generateKey()">Generate AES Key</button>
+    
+    <br />
+    <button onclick="encrypt()">Encrypt Message</button>
+    <input id="cipher" placeholder="Ciphertext" />
+    
+    <br />
+    <button onclick="decrypt()">Decrypt Message</button>
+    <input id="clear" placeholder="Decrypted message" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+    <script>
+        let key;
+        let encrypted;
+
+        function generateKey() {
+            key = CryptoJS.lib.WordArray.random(16).toString();
+            document.getElementById("key").value = key;
+        }
+
+        function encrypt() {
+            let message = document.getElementById("plain").value;
+            encrypted = CryptoJS.AES.encrypt(message, key);
+            document.getElementById("cipher").value = encrypted;
+        }
+
+        function decrypt() {
+            let clearText = CryptoJS.AES.decrypt(encrypted, key);
+            document.getElementById("clear").value = clearText.toString(CryptoJS.enc.Utf8);
+        }
+
+    </script>
+</body>
+</html>

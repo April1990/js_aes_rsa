@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSA</title>
+</head>
+<body>
+    <input id="plain" placeholder="Enter plaintext" />
+    <br /><br />
+
+    <p>Upload public key</p>
+    <input type="file" id="pub-file" enctype="multipart/form-data" />
+    <button onclick="readPublicKey()">Read Public Key</button><span id="pub-loaded"></span>
+
+    <br /> <br />
+    <button onclick="rsaEncrypt()">Encrypt the Message</button>
+
+    <br /> <br />
+    <h3>Encrypted value</h3>
+    <p id="encrypted"></p>
+
+    <br /> <br />
+    <p>Upload private key</p>
+    <input type="file" id="priv-file" enctype="multipart/form-data" />
+    <button onclick="readPrivateKey()">Read Private Key</button><span id="priv-loaded"></span>
+
+    <br /> <br />
+    <button onclick="rsaDecrypt()">Decrypt the Message</button>
+    <p id="decrypted"></p>
+
+    <script src="rsa.js"></script>
+
+    <script>
+        let publicKey;
+
+        function readPublicKey() {
+            let files = document.getElementById("pub-file").files;
+            let file = files[0];
+            let reader = new FileReader();
+
+            reader.onloadend = function (event) {
+                publicKey = event.target.result;
+                publicKey = publicKey.replace(/(\r\n|\n|\r)/gm, "");
+                document.getElementById("pub-loaded").innerHTML = "Public key loaded";
+            };
+
+            reader.readAsText(file);
+        }
+    </script>
+
+</body>
+</html>
